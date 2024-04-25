@@ -1,8 +1,11 @@
 package com.challengeparttwo.client.service.impl;
 
-import com.challengeparttwo.client.model.Cliente;
+import com.challengeparttwo.client.client.Boleto;
+import com.challengeparttwo.client.client.BoletoClient;
+import com.challengeparttwo.client.entity.Cliente;
 import com.challengeparttwo.client.repository.ClienteRepository;
 import com.challengeparttwo.client.service.ClienteService;
+import org.springdoc.core.converters.models.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +15,28 @@ import java.util.Optional;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final BoletoClient boletoClient;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, BoletoClient boletoClient) {
         this.clienteRepository = clienteRepository;
+        this.boletoClient = boletoClient;
     }
 
+    public List<Boleto> getBoletosByClienteId(String id){
+        if(id != null){
+            return boletoClient.getBoletosByClienteId(id);
+        } else {
+            throw new RuntimeException("Id do cliente não pode ser nulo");
+        }
+    }
+
+    public Cliente getClienteByCpf(String cpf){
+        if(cpf != null){
+            return clienteRepository.findByCpf(cpf);
+        } else {
+            throw new RuntimeException("Cpf do cliente não pode ser nulo");
+        }
+    }
 
     @Override
     public String createClient(Cliente cliente) {

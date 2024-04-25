@@ -1,4 +1,4 @@
-package com.challengeparttwo.client.model;
+package com.challengeparttwo.client.entity;
 
 
 import jakarta.persistence.*;

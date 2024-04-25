@@ -1,12 +1,11 @@
 package com.challengeparttwo.client.config;
 
-import com.challengeparttwo.client.model.Cliente;
+import com.challengeparttwo.client.entity.Cliente;
 import com.challengeparttwo.client.service.impl.ClienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
