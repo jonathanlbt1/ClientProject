@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -72,12 +71,12 @@ class ClienteServiceImplTest {
     }
 
     @Test
-    void testGetBoletosByClienteIdIsTrue() {
+    void testThatGetBoletosByClienteIdIsTrue() {
         
-        ArrayList<Boleto> boletoList = getBoletos();
+        var boletoList = getBoletos();
         when(boletoClient.getBoletosByClienteId(Mockito.any())).thenReturn(boletoList);
 
-        List<Boleto> actualBoletosByClienteId = clienteServiceImpl.getBoletosByClienteId("383.440.410-15");
+        var actualBoletosByClienteId = clienteServiceImpl.getBoletosByClienteId("383.440.410-15");
 
         verify(boletoClient).getBoletosByClienteId(eq("383.440.410-15"));
         assertFalse(actualBoletosByClienteId.isEmpty());
@@ -86,7 +85,7 @@ class ClienteServiceImplTest {
 
 
     @Test
-    void testGetBoletosByClienteIdIsFalse() {
+    void testThatGetBoletosByClienteIdIsFalse() {
 
         when(boletoClient.getBoletosByClienteId(Mockito.any())).thenThrow(new RuntimeException("foo"));
 
@@ -96,24 +95,26 @@ class ClienteServiceImplTest {
 
 
     @Test
-    void testGetClienteByCpfReturnsCliente() {
+    void testThatGetClienteByCpfReturnsCliente() {
 
         var cliente = new Cliente();
         cliente.setCpf("622.723.933-06");
-        cliente.setDataNascimento(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        cliente.setDataNascimento(Date.from(LocalDate.of(1970, 1, 1)
+                .atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         cliente.setEndereco("Endereco");
         cliente.setNome("John Doe");
-        Optional<Cliente> ofResult = Optional.of(cliente);
+
+        var ofResult = Optional.of(cliente);
         when(clienteRepository.findByCpf(Mockito.any())).thenReturn(ofResult);
 
-        Optional<Cliente> actualClienteByCpf = clienteServiceImpl.getClienteByCpf("622.723.933-06");
+        var actualClienteByCpf = clienteServiceImpl.getClienteByCpf("622.723.933-06");
         verify(clienteRepository, atLeast(1)).findByCpf(eq("622.723.933-06"));
         assertSame(ofResult, actualClienteByCpf);
     }
 
 
     @Test
-    void testGetClienteByCpfReturnsNothing() {
+    void testThatGetClienteByCpfReturnsNothing() {
 
         Optional<Cliente> emptyResult = Optional.empty();
         when(clienteRepository.findByCpf(Mockito.any())).thenReturn(emptyResult);
@@ -124,7 +125,7 @@ class ClienteServiceImplTest {
 
 
     @Test
-    void testGetClienteByCpfReturnsNotFound() {
+    void testThatGetClienteByCpfReturnsNotFound() {
 
         when(clienteRepository.findByCpf(Mockito.any())).thenThrow(new RuntimeException("Cliente não encontrado"));
 
@@ -134,7 +135,7 @@ class ClienteServiceImplTest {
 
 
     @Test
-    void testCreateClientReturnsExceptionWhenClienteAlreadyExists() {
+    void testThatCreateClientReturnsExceptionWhenClienteAlreadyExists() {
 
         var cliente = new Cliente();
         cliente.setCpf("472.958.295-04");
@@ -158,7 +159,7 @@ class ClienteServiceImplTest {
 
 
     @Test
-    void testCreateClientReturnsSuccessMessage() {
+    void testThatCreateClientReturnsSuccessMessage() {
 
         when(clienteRepository.findByCpf(Mockito.any()))
                 .thenThrow(new RuntimeException("Cliente salvo com sucesso"));
@@ -201,7 +202,7 @@ class ClienteServiceImplTest {
         cliente3.setEndereco("Endereco");
         cliente3.setNome("John Dulop");
 
-        String actualUpdateClientResult = clienteServiceImpl.updateClient(cliente3);
+        var actualUpdateClientResult = clienteServiceImpl.updateClient(cliente3);
 
         verify(clienteRepository).findById(isNull());
         verify(clienteRepository).save(isA(Cliente.class));
@@ -281,7 +282,7 @@ class ClienteServiceImplTest {
     void testThatListClientesReturnsAListOfClientes() {
 
         when(clienteRepository.findAll()).thenReturn(new ArrayList<>());
-        List<Cliente> actualListClientsResult = clienteServiceImpl.listClients();
+        var actualListClientsResult = clienteServiceImpl.listClients();
 
         verify(clienteRepository).findAll();
         assertTrue(actualListClientsResult.isEmpty());
