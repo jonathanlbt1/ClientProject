@@ -3,9 +3,13 @@ package com.challengeparttwo.client.service.impl;
 import com.challengeparttwo.client.client.Boleto;
 import com.challengeparttwo.client.client.BoletoClient;
 import com.challengeparttwo.client.entity.Cliente;
+import com.challengeparttwo.client.exception.ClienteExceptionHandler;
 import com.challengeparttwo.client.repository.ClienteRepository;
 import com.challengeparttwo.client.service.ClienteService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -31,28 +35,31 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente getClienteByCpf(String cpf){
-        if(Objects.nonNull(cpf)){
+    public Optional<Cliente> getClienteByCpf(String cpf){
+        var verificaCliente = clienteRepository.findByCpf(cpf);
+        if(verificaCliente.isPresent()) {
             return clienteRepository.findByCpf(cpf);
         } else {
-            throw new RuntimeException("Cpf do cliente não pode ser nulo");
+            throw new RuntimeException("Cliente não encontrado");
         }
     }
 
     @Override
     public String createClient(Cliente cliente) {
-        if(Objects.nonNull(cliente)){
+        var validaCliente = clienteRepository.findByCpf(cliente.getCpf());
+        if(validaCliente.isEmpty()){
             clienteRepository.save(cliente);
             return "Cliente salvo com sucesso";
         } else {
-            throw new RuntimeException("Cliente não pode ser nulo");
+            throw new RuntimeException("Este CPF já está cadastrado");
         }
     }
 
     @Override
     public String updateClient(Cliente cliente) {
-        if(Objects.nonNull(cliente)){
-            clienteRepository.findById(cliente.getId())
+        var oldCliente = clienteRepository.findById(cliente.getId());
+        if(oldCliente.isPresent()){
+            oldCliente
                     .map(cliente1 -> {
                         cliente1.setNome(cliente.getNome());
                         cliente1.setCpf(cliente.getCpf());
@@ -62,18 +69,19 @@ public class ClienteServiceImpl implements ClienteService {
                         return clienteRepository.save(cliente1);
                     });
         } else {
-            throw new RuntimeException("Cliente não pode ser nulo");
+            throw new RuntimeException("Cliente não encontrado!");
         }
         return "Cliente atualizado com sucesso";
     }
 
     @Override
     public String deleteClient(Long id) {
-        if(Objects.nonNull(id)){
+        var cliente = clienteRepository.findById(id);
+        if(cliente.isPresent()){
             clienteRepository.deleteById(id);
             return "Cliente deletado com sucesso";
         } else {
-            throw new RuntimeException("Id do cliente não pode ser nulo");
+            throw new RuntimeException("Cliente não encontrado.");
         }
     }
 
@@ -84,9 +92,11 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> getClient(Long id) {
-        if(Objects.nonNull(id)){
+        var cliente = clienteRepository.findById(id);
+        if (cliente.isPresent()) {
             return clienteRepository.findById(id);
+        } else {
+            throw new RuntimeException("Cliente não encontrado.");
         }
-        return Optional.empty();
     }
 }

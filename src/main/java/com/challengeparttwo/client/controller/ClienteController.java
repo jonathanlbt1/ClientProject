@@ -6,6 +6,7 @@ import com.challengeparttwo.client.service.impl.ClienteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -89,9 +90,9 @@ public class ClienteController {
             @ApiResponse(responseCode = "400", description = "Id do cliente não pode ser nulo")
     })
     @GetMapping("/{id}")
-    public Optional<Cliente> getClient(@RequestParam Long id){
+    public ResponseEntity<Optional<Cliente>> getClientById(@RequestParam Long id){
         if(Objects.nonNull(id)){
-            return clienteService.getClient(id);
+            return ResponseEntity.ok(clienteService.getClient(id));
         } else {
             throw new RuntimeException("Id do cliente não pode ser nulo");
         }
@@ -103,12 +104,11 @@ public class ClienteController {
             @ApiResponse(responseCode = "400", description = "Cpf do cliente não pode ser nulo")
     })
     @GetMapping("/cpf/{cpf}")
-    public Cliente getClienteByCpf(@RequestParam String cpf){
+    public ResponseEntity<Optional<Cliente>> getClienteByCpf(@RequestParam String cpf){
         if(Objects.nonNull(cpf)){
-            return clienteService.getClienteByCpf(cpf);
+           return ResponseEntity.ok(clienteService.getClienteByCpf(cpf));
         } else {
             throw new RuntimeException("Cpf do cliente não pode ser nulo");
         }
     }
-
 }
