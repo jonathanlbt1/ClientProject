@@ -12,9 +12,16 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "cpf")
     private String cpf;
+
+    @Column(name = "data_nascimento")
     private Date dataNascimento;
+
+    @Column(name = "endereco")
     private String endereco;
 
     public Cliente(String nome, String cpf, Date dataNascimento, String endereco) {

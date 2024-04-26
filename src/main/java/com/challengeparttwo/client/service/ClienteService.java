@@ -26,4 +26,7 @@ public interface ClienteService {
     @RequestMapping(method = RequestMethod.GET, value = "/cliente/{id}")
     Optional<Cliente> getClient(Long id);
 
+    @RequestMapping(method = RequestMethod.GET, value = "/cliente/cpf/{cpf}")
+    Cliente getClienteByCpf(String cpf);
+
 }

@@ -5,10 +5,10 @@ import com.challengeparttwo.client.client.BoletoClient;
 import com.challengeparttwo.client.entity.Cliente;
 import com.challengeparttwo.client.repository.ClienteRepository;
 import com.challengeparttwo.client.service.ClienteService;
-import org.springdoc.core.converters.models.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,15 +23,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public List<Boleto> getBoletosByClienteId(String id){
-        if(id != null){
+        if(Objects.nonNull(id)){
             return boletoClient.getBoletosByClienteId(id);
         } else {
             throw new RuntimeException("Id do cliente não pode ser nulo");
         }
     }
 
+    @Override
     public Cliente getClienteByCpf(String cpf){
-        if(cpf != null){
+        if(Objects.nonNull(cpf)){
             return clienteRepository.findByCpf(cpf);
         } else {
             throw new RuntimeException("Cpf do cliente não pode ser nulo");
@@ -40,7 +41,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public String createClient(Cliente cliente) {
-        if(cliente != null){
+        if(Objects.nonNull(cliente)){
             clienteRepository.save(cliente);
             return "Cliente salvo com sucesso";
         } else {
@@ -50,7 +51,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public String updateClient(Cliente cliente) {
-        if(cliente != null){
+        if(Objects.nonNull(cliente)){
             clienteRepository.findById(cliente.getId())
                     .map(cliente1 -> {
                         cliente1.setNome(cliente.getNome());
@@ -68,7 +69,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public String deleteClient(Long id) {
-        if(id != null){
+        if(Objects.nonNull(id)){
             clienteRepository.deleteById(id);
             return "Cliente deletado com sucesso";
         } else {
@@ -83,7 +84,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Optional<Cliente> getClient(Long id) {
-        if(id != null){
+        if(Objects.nonNull(id)){
             return clienteRepository.findById(id);
         }
         return Optional.empty();
