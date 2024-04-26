@@ -3,11 +3,8 @@ package com.challengeparttwo.client.service.impl;
 import com.challengeparttwo.client.client.Boleto;
 import com.challengeparttwo.client.client.BoletoClient;
 import com.challengeparttwo.client.entity.Cliente;
-import com.challengeparttwo.client.exception.ClienteExceptionHandler;
 import com.challengeparttwo.client.repository.ClienteRepository;
 import com.challengeparttwo.client.service.ClienteService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
