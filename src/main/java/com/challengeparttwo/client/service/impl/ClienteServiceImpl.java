@@ -8,6 +8,7 @@ import com.challengeparttwo.client.service.ClienteService;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,10 +25,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public List<Boleto> getBoletosByClienteId(String id){
-        if(Objects.nonNull(id)){
+        var boletos = boletoClient.getBoletosByClienteId(id);
+        if(!boletos.isEmpty()){
             return boletoClient.getBoletosByClienteId(id);
         } else {
-            throw new RuntimeException("Id do cliente não pode ser nulo");
+            return new ArrayList<>();
         }
     }
 
@@ -45,6 +47,9 @@ public class ClienteServiceImpl implements ClienteService {
     public String createClient(Cliente cliente) {
         var validaCliente = clienteRepository.findByCpf(cliente.getCpf());
         if(validaCliente.isEmpty()){
+            if (Objects.nonNull(cliente.getId())){
+                cliente.setId(null);
+            }
             clienteRepository.save(cliente);
             return "Cliente salvo com sucesso";
         } else {

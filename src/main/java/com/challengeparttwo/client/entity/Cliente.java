@@ -1,8 +1,6 @@
 package com.challengeparttwo.client.entity;
 
-
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -10,6 +8,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "nome")
@@ -24,6 +23,7 @@ public class Cliente {
     @Column(name = "endereco")
     private String endereco;
 
+
     public Cliente(String nome, String cpf, Date dataNascimento, String endereco) {
         this.nome = nome;
         this.cpf = cpf;
@@ -32,6 +32,10 @@ public class Cliente {
     }
 
     public Cliente() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

@@ -8,6 +8,7 @@
 ### You will find the database in the following link:
 
 ### http://localhost:8085/h2-console
-
-### P.S. The endpoint to get data from boletos by client id, will only work if you have the BoletoApplication
+### Password: sa
+### User: sa
+### P.S. The endpoint to get data from boletos by client id, will only work if you have the Invoice application
 ### running in the port 8082. Otherwise, you will get an error or always an empty message.

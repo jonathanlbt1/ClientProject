@@ -23,6 +23,7 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
+
     @Operation(summary = "Retorna os boletos de um cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna uma lista de boletos"),
@@ -40,6 +41,7 @@ public class ClienteController {
         }
     }
 
+
     @Operation(summary = "Cria um cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cliente salvo com sucesso"),
@@ -47,8 +49,13 @@ public class ClienteController {
     })
     @PostMapping
     public String createClient(@RequestBody Cliente cliente){
-        return clienteService.createClient(cliente);
+        if(Objects.isNull(cliente)){
+            throw new RuntimeException("Cliente não pode ser nulo");
+        } else {
+            return clienteService.createClient(cliente);
+        }
     }
+
 
     @Operation(summary = "Atualiza um cliente")
     @ApiResponses(value = {
@@ -57,8 +64,12 @@ public class ClienteController {
     })
     @PutMapping("/{id}")
     public String updateClient(@RequestBody Cliente cliente){
+        if(Objects.isNull(cliente)){
+            throw new RuntimeException("Cliente não pode ser nulo");
+        }
         return clienteService.updateClient(cliente);
     }
+
 
     @Operation(summary = "Deleta um cliente")
     @ApiResponses(value = {
@@ -75,6 +86,7 @@ public class ClienteController {
         }
     }
 
+
     @Operation(summary = "Lista todos os clientes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna uma lista de clientes")
@@ -83,6 +95,7 @@ public class ClienteController {
     public List<Cliente> listClients(){
         return clienteService.listClients();
     }
+
 
     @Operation(summary = "Retorna um cliente")
     @ApiResponses(value = {
@@ -97,6 +110,7 @@ public class ClienteController {
             throw new RuntimeException("Id do cliente não pode ser nulo");
         }
     }
+
 
     @Operation(summary = "Retorna um cliente pelo cpf")
     @ApiResponses(value = {
