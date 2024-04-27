@@ -78,7 +78,7 @@ class ClienteServiceImplTest {
 
         var actualBoletosByClienteId = clienteServiceImpl.getBoletosByClienteId("383.440.410-15");
 
-        verify(boletoClient).getBoletosByClienteId(eq("383.440.410-15"));
+        assertEquals(2, actualBoletosByClienteId.size());
         assertFalse(actualBoletosByClienteId.isEmpty());
         assertSame(boletoList, actualBoletosByClienteId);
     }
